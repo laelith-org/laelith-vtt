@@ -1,0 +1,1 @@
+https://id.laelith.com/api/realms/laelith/authorize?response_type=code&scope=openid&client_id=vtt.laelith.com&redirect_uri=http%3A%2F%2Fvtt.test.laelith.com%3A8080%2Fwebjars%2Fswagger-ui%2Foauth2-redirect.html

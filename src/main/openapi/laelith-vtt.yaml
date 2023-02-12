@@ -10,6 +10,8 @@ servers:
       description: VTT laelith server
     - url: https://vtt.test.laelith.com
       description: VTT laelith test server
+security:
+  - oAuth2AuthCode: [ ]
 tags:
   - name: base
     description: Base API
@@ -28,6 +30,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Info'
 components:
+  securitySchemes:
+    oAuth2AuthCode:
+      type: oauth2
+      description: OAuth2 authentication
+      flows:
+        authorizationCode:
+          authorizationUrl: https://id.laelith.com/api/realms/laelith/authorize
+          tokenUrl: https://id.laelith.com/api/realms/laelith/token
+          refreshUrl: https://id.laelith.com/api/realms/laelith/token
+          scopes:
+            openid: Open ID
   schemas:
     Info:
       type: object
