@@ -4,7 +4,7 @@ import org.laelith.vtt.domain.Info
 import org.springframework.stereotype.Controller
 
 @Controller
-class DefaultApiImpl: DefaultApiService {
+class BaseApiImpl: BaseApiService {
     override suspend fun info(): Info {
         return Info(
             version = "1.0.0",

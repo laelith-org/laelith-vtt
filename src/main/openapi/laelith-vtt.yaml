@@ -10,11 +10,16 @@ servers:
       description: VTT laelith server
     - url: https://vtt.test.laelith.com
       description: VTT laelith test server
+tags:
+  - name: base
+    description: Base API
 paths:
   /info:
     get:
       summary: Get server info
       operationId: info
+      tags:
+        - base
       responses:
         200:
           description: Server info

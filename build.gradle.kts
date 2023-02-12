@@ -62,7 +62,7 @@ springBoot {
 	mainClass.set("org.laelith.vtt.LaelithVttApplicationKt")
 }
 
-val openapiSpec = "$rootDir/src/main/openapi/vtt.yaml"
+val openapiSpec = "$rootDir/src/main/openapi/laelith-vtt.yaml"
 val openApiServerSourcesGenerationDir = "${buildDir}/generated-sources/openapi/kotlin-spring"
 val basePackage = "$group.${rootProject.name}"
 
