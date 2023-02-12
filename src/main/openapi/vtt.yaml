@@ -1,0 +1,42 @@
+openapi: 3.0.0
+info:
+  title: Laelith VTT API
+  description: Laelith VTT API
+  version: 1.0.0
+servers:
+    - url: http://localhost:8080
+      description: Local server
+    - url: https://vtt.laelith.com
+      description: VTT laelith server
+    - url: https://vtt.test.laelith.com
+      description: VTT laelith test server
+paths:
+  /info:
+    get:
+      summary: Get server info
+      operationId: info
+      responses:
+        200:
+          description: Server info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Info'
+components:
+  schemas:
+    Info:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Server version
+        name:
+          type: string
+          description: Application name
+        description:
+          type: string
+          description: Application description
+        time:
+          type: integer
+          format: int64
+          description: Server time
