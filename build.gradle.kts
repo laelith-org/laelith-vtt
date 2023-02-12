@@ -29,8 +29,9 @@ project.version = scmVersion.version
 dependencies {
 	val kotlinxCoroutinesVersion = "1.6.1"
 	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-	implementation("org.springframework.boot:spring-boot-starter-security")
+	// Disabled for now
+	// implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+	// implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -38,7 +39,7 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
-	testImplementation("org.springframework.security:spring-security-test")
+	// testImplementation("org.springframework.security:spring-security-test")
 
 	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.0.2")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -56,6 +57,8 @@ dependencies {
 		exclude(module = "junit")
 	}
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion")
+	// Dices
+	implementation("dev.diceroll:dice-parser:0.1.0")
 }
 
 springBoot {
