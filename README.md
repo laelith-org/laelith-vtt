@@ -24,6 +24,8 @@ docker run -p 8081:8080 -it vtt:0.1.0-SNAPSHOT
 ```
 
 ## Dice parser
+Dice parser expressions for the endpoint _dice/roll_.
+
 https://github.com/diceroll-dev/dice-parser
 
 | Name                          | Notation                                            | Example         | Description                                                                                                                 |
