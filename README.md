@@ -13,15 +13,25 @@ echo "::1 vtt.test.laelith.com" | sudo tee -a /etc/hosts
 ``` bash
 ./gradlew bootRun
 ```
-## Build a docker image
+## Build a local docker image
 ``` bash
 ./gradlew bootBuildImage
 ```
-### Run the docker image
+### Run the local docker image
 Run on port 8081
 ``` bash
-docker run -p 8081:8080 -it vtt:0.1.0-SNAPSHOT
+docker run --rm -p 8080:8080 -it vtt:0.1.0-SNAPSHOT
 ```
+Access it with http://localhost:8080
+
+## Publish a docker image
+Create a new release in https://github.com/vcarluer/laelith-vtt
+The github action will build and publish the docker image to docker hub.
+### Run the published docker image
+``` bash
+docker run --rm -p 8080:8080 ghcr.io/vcarluer/laelith-vtt:[RELEASE_TAG]
+```
+Access it with http://localhost:8080
 
 ## Dice parser
 Dice parser expressions for the endpoint _dice/roll_.
