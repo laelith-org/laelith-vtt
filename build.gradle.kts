@@ -72,12 +72,14 @@ springBoot {
 }
 
 tasks.withType<BootBuildImage> {
-	imageName.set(System.getenv("GHCR_IMAGE"))
-	publish.set(true)
-	docker {
-		publishRegistry {
-			username.set(System.getenv("GHCR_USERNAME"))
-			password.set(System.getenv("GHCR_PASSWORD"))
+	if (System.getenv("GHCR_IMAGE") != null) {
+		imageName.set(System.getenv("GHCR_IMAGE"))
+		publish.set(true)
+		docker {
+			publishRegistry {
+				username.set(System.getenv("GHCR_USERNAME"))
+				password.set(System.getenv("GHCR_PASSWORD"))
+			}
 		}
 	}
 }
