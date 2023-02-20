@@ -33,7 +33,7 @@ scmVersion {
 project.version = scmVersion.version
 
 dependencies {
-	val kotlinxCoroutinesVersion = "1.6.1"
+	val kotlinxCoroutinesVersion = "1.6.4"
 	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 	// Disabled for now
 	// implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
