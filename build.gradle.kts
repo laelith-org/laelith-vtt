@@ -64,7 +64,7 @@ dependencies {
 	}
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion")
 	// Dices
-	implementation("dev.diceroll:dice-parser:0.1.0")
+	implementation("dev.diceroll:dice-parser:0.2.0")
 }
 
 springBoot {
