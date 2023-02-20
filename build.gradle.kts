@@ -15,7 +15,7 @@ group = "org.laelith"
 version = "0.0.1-SNAPSHOT"
 java {
 	toolchain {
-		languageVersion.set(JavaLanguageVersion.of(18))
+		languageVersion.set(JavaLanguageVersion.of(17))
 	}
 }
 
