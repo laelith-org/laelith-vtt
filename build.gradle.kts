@@ -73,6 +73,7 @@ springBoot {
 
 tasks.withType<BootBuildImage> {
 	dependsOn("build")
+	environment.set(mapOf("BP_JVM_VERSION" to "17"))
 	if (System.getenv("GHCR_IMAGE") != null) {
 		imageName.set(System.getenv("GHCR_IMAGE"))
 		publish.set(true)
