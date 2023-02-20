@@ -27,7 +27,7 @@ jobs:
       - name: Build Docker image
         run: ./gradlew bootBuildImage
         env:
-          GHCR_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
+          GHCR_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           GHCR_TAG: ${{ github.event.release.tag_name }}
           GHCR_USERNAME: ${{ github.actor }}
           GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}

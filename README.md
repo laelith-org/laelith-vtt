@@ -27,6 +27,7 @@ Access it with http://localhost:8080
 ## Publish a docker image
 Create a new release in https://github.com/vcarluer/laelith-vtt
 The github action will build and publish the docker image to docker hub.
+Image tags are "RELEASE_TAG" and "latest".
 ### Run the published docker image
 ``` bash
 docker run --rm -p 8080:8080 ghcr.io/vcarluer/laelith-vtt:[RELEASE_TAG]
