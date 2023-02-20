@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
 	id("org.springframework.boot") version "3.0.2"
@@ -68,6 +69,17 @@ dependencies {
 
 springBoot {
 	mainClass.set("org.laelith.vtt.LaelithVttApplicationKt")
+}
+
+tasks.withType<BootBuildImage> {
+	imageName.set(System.getenv("GHCR_IMAGE"))
+	publish.set(true)
+	docker {
+		publishRegistry {
+			username.set(System.getenv("GHCR_USERNAME"))
+			password.set(System.getenv("GHCR_PASSWORD"))
+		}
+	}
 }
 
 val openapiSpec = "$rootDir/src/main/openapi/laelith-vtt.yaml"
