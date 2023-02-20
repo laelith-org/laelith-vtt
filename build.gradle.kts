@@ -7,11 +7,11 @@ plugins {
 	kotlin("plugin.spring") version "1.7.22"
 	id("pl.allegro.tech.build.axion-release") version "1.14.4"
 	id("org.openapi.generator") version "6.3.0"
+	id("java-library")
 }
 
 group = "org.laelith"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
 java {
 	toolchain {
 		languageVersion.set(JavaLanguageVersion.of(17))
