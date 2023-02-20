@@ -4,7 +4,7 @@ plugins {
 	id("org.springframework.boot") version "3.0.2"
 	id("io.spring.dependency-management") version "1.1.0"
 	kotlin("jvm") version "1.7.22"
-	kotlin("plugin.spring") version "1.7.22"
+	kotlin("plugin.spring") version "1.8.10"
 	id("pl.allegro.tech.build.axion-release") version "1.14.4"
 	id("org.openapi.generator") version "6.3.0"
 	id("java-library")
