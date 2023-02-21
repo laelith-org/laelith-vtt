@@ -87,6 +87,14 @@ tasks.withType<BootBuildImage> {
 	}
 }
 
+gradleEnterprise {
+	buildScan {
+		publishAlwaysIf(!System.getenv("BUILD_SCAN").isNullOrEmpty())
+		termsOfServiceUrl = "https://gradle.com/terms-of-service"
+		termsOfServiceAgree = "yes"
+	}
+}
+
 val openapiSpec = "$rootDir/src/main/openapi/laelith-vtt.yaml"
 val openApiServerSourcesGenerationDir = "${buildDir}/generated-sources/openapi/kotlin-spring"
 val basePackage = "$group.${rootProject.name}"

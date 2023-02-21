@@ -32,4 +32,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Run build with Gradle Wrapper
-        run: ./gradlew build --scan
+        run: ./gradlew build
+        env:
+          BUILD_SCAN: true

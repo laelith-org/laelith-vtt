@@ -25,9 +25,10 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Build Docker image
-        run: ./gradlew bootBuildImage --scan
+        run: ./gradlew bootBuildImage
         env:
           GHCR_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           GHCR_TAG: ${{ github.event.release.tag_name }}
           GHCR_USERNAME: ${{ github.actor }}
           GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_SCAN: true
