@@ -57,7 +57,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("jakarta.validation:jakarta.validation-api")
-	implementation("jakarta.annotation:jakarta.annotation-api:2.1.0")
+	implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
 
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
