@@ -7,7 +7,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.converter.RsaKeyConverters
-import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder
 import org.springframework.security.web.server.SecurityWebFilterChain
@@ -24,6 +23,7 @@ class SecurityConfig(@Value("\${security.jwt.public-key}") val key: String) {
         http.cors()
             .and()
             .authorizeExchange { exchange ->
+                exchange.pathMatchers(HttpMethod.OPTIONS).permitAll()
                 exchange.pathMatchers(HttpMethod.GET, "/").permitAll()
                 exchange.pathMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 exchange.pathMatchers(HttpMethod.GET, "/webjars/swagger-ui/**").permitAll()
