@@ -23,11 +23,14 @@ class DiceApiImpl: DiceApiService {
     private fun getFlattenResults(resultTree: ResultTree): List<DiceRollResult> {
         val results = mutableListOf<DiceRollResult>()
         resultTree.results.forEach {
-            results.add(DiceRollResult(
-                expression = it.expression.description(),
-                result = it.value
-            ))
-            results.addAll(this.getFlattenResults(it))
+            if (it.results.isEmpty()) {
+                results.add(DiceRollResult(
+                    expression = it.expression.description(),
+                    result = it.value
+                ))
+            } else {
+                results.addAll(this.getFlattenResults(it))
+            }
         }
 
         return results
