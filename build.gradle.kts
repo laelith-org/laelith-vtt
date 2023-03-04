@@ -75,14 +75,14 @@ springBoot {
 tasks.withType<BootBuildImage> {
 	dependsOn("build")
 	environment.set(mapOf("BP_JVM_VERSION" to "17"))
-	if (System.getenv("GHCR_IMAGE") != null) {
-		imageName.set("${System.getenv("GHCR_IMAGE")}:${System.getenv("GHCR_TAG")}")
+	if (System.getenv("CR_IMAGE") != null) {
+		imageName.set("${System.getenv("CR_IMAGE")}:${System.getenv("CR_TAG")}")
 		publish.set(true)
-		tags.add("${System.getenv("GHCR_IMAGE")}:latest")
+		tags.add("${System.getenv("CR_IMAGE")}:latest")
 		docker {
 			publishRegistry {
-				username.set(System.getenv("GHCR_USERNAME"))
-				password.set(System.getenv("GHCR_PASSWORD"))
+				username.set(System.getenv("CR_USERNAME"))
+				password.set(System.getenv("CR_PASSWORD"))
 			}
 		}
 	}

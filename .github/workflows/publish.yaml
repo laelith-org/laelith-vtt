@@ -6,6 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  DO_REGISTRY: registry.digitalocean.com/bitfu
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
@@ -24,11 +25,19 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-      - name: Build Docker image
+      - name: Build Docker image and push ghcr
         run: ./gradlew bootBuildImage
         env:
-          GHCR_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          GHCR_TAG: ${{ github.event.release.tag_name }}
-          GHCR_USERNAME: ${{ github.actor }}
-          GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          CR_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          CR_TAG: ${{ github.event.release.tag_name }}
+          CR_USERNAME: ${{ github.actor }}
+          CR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_SCAN: true
+      - name: Build Docker image and push digital ocean
+        run: ./gradlew bootBuildImage
+        env:
+          CR_IMAGE: ${{ env.DO_REGISTRY }}/${{ env.IMAGE_NAME }}
+          CR_TAG: ${{ github.event.release.tag_name }}
+          CR_USERNAME: ${{ secrets.DO_TOKEN }}
+          CR_PASSWORD: ${{ secrets.DO_TOKEN }}
           BUILD_SCAN: true
