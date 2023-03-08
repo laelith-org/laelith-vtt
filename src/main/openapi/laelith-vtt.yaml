@@ -51,6 +51,171 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiceRollResults'
+  /dice/rolls:
+    get:
+      summary: Roll dice
+      operationId: rolls
+      tags:
+        - dice
+      responses:
+        200:
+          description: Dice roll result
+          content:
+            text/event-stream:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiceRollResults'
+  /experience:
+    post:
+      summary: Add VTT experience
+      operationId: addExperience
+      tags:
+        - experience
+      requestBody:
+        description: Experience to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperienceIn'
+      responses:
+        201:
+          description: Experience added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experience'
+    get:
+      summary: List of VTT experiences stream
+      operationId: listExperience
+      tags:
+        - experience
+      responses:
+        200:
+          description: VTT experience list
+          content:
+            text/event-stream:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExperienceList'
+  /experience/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: Experience id
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get VTT experience
+      operationId: getExperience
+      tags:
+          - experience
+      responses:
+        200:
+          description: Experience
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Experience'
+    delete:
+      summary: Remove VTT experience
+      operationId: removeExperience
+      tags:
+          - experience
+      responses:
+        200:
+          description: Experience removed
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Experience'
+  /experience/{id}/join:
+    parameters:
+      - name: id
+        in: path
+        description: Experience id
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Join VTT experience main stream
+      operationId: joinExperience
+      tags:
+        - experience
+      responses:
+        200:
+          description: VTT experience main stream
+          content:
+            text/event-stream:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExperienceInfo'
+  /experience/{id}/quit:
+    parameters:
+      - name: id
+        in: path
+        description: Experience id
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Quit VTT experience stream
+      operationId: quitExperience
+      tags:
+        - experience
+      responses:
+        201:
+          description: VTT experience quit
+  /experience/{id}/roll:
+    parameters:
+      - name: id
+        in: path
+        description: Experience id
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Roll dice
+      operationId: experienceRoll
+      tags:
+        - experience
+      requestBody:
+        description: Dice roll request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiceRollRequest'
+      responses:
+        200:
+          description: Dice roll OK
+  /experience/{id}/events/rolls:
+    parameters:
+      - name: id
+        in: path
+        description: Experience id
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Roll dice
+      operationId: experienceEventRolls
+      tags:
+        - experience
+      responses:
+        200:
+          description: Experience dice roll result
+          content:
+            text/event-stream:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiceRollResults'
+
 components:
   securitySchemes:
     oAuth2AuthCode:
@@ -112,3 +277,34 @@ components:
         result:
           type: integer
           description: Result of the roll
+    ExperienceIn:
+      type: object
+      description: A VTT experience to add
+      properties:
+        name:
+          type: string
+          description: Experience name
+    Experience:
+      type: object
+      description: A VTT experience
+      properties:
+        id:
+          type: string
+          description: Experience id
+        name:
+          type: string
+          description: Experience name
+      required:
+        - id
+    ExperienceInfo:
+      type: object
+      description: A VTT experience information
+      properties:
+        message:
+          type: string
+          description: Message of the VTT experience
+    ExperienceList:
+      type: array
+      description: VTT experience list
+      items:
+        $ref: '#/components/schemas/Experience'

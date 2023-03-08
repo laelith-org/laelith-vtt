@@ -64,8 +64,10 @@ dependencies {
 		exclude(module = "junit")
 	}
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion")
-	// Dices
+	// Dices https://github.com/diceroll-dev/dice-parser
 	implementation("dev.diceroll:dice-parser:0.2.0")
+	// https://hashids.org/kotlin/
+	implementation("org.hashids:hashids:1.0.3")
 }
 
 springBoot {

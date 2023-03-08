@@ -6,33 +6,41 @@ import org.laelith.vtt.domain.DiceRollRequest
 import org.laelith.vtt.domain.DiceRollResults
 import org.springframework.stereotype.Controller
 import dev.diceroll.parser.detailedRoll
+import kotlinx.coroutines.flow.*
 import org.laelith.vtt.domain.DiceRollResult
 
+private fun getFlattenResults(resultTree: ResultTree): List<DiceRollResult> {
+    val results = mutableListOf<DiceRollResult>()
+    resultTree.results.forEach {
+        if (it.results.isEmpty()) {
+            results.add(DiceRollResult(
+                expression = it.expression.description(),
+                result = it.value
+            ))
+        } else {
+            results.addAll(getFlattenResults(it))
+        }
+    }
+
+    return results
+}
 
 @Controller
 class DiceApiImpl: DiceApiService {
+    private val diceRollFlow = MutableSharedFlow<DiceRollResults>()
     override suspend fun roll(diceRollRequest: DiceRollRequest): DiceRollResults {
         val resultTree = detailedRoll(diceRollRequest.expression)
-        return DiceRollResults(
+        val result = DiceRollResults(
             expression = resultTree.expression.description(),
             result = resultTree.value,
-            rolls = this.getFlattenResults(resultTree)
+            rolls = getFlattenResults(resultTree)
         )
+
+        // this.diceRollFlow.emit(result)
+        return result;
     }
 
-    private fun getFlattenResults(resultTree: ResultTree): List<DiceRollResult> {
-        val results = mutableListOf<DiceRollResult>()
-        resultTree.results.forEach {
-            if (it.results.isEmpty()) {
-                results.add(DiceRollResult(
-                    expression = it.expression.description(),
-                    result = it.value
-                ))
-            } else {
-                results.addAll(this.getFlattenResults(it))
-            }
-        }
-
-        return results
+    override fun rolls(): Flow<DiceRollResults> {
+        return this.diceRollFlow;
     }
 }
