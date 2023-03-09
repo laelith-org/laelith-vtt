@@ -99,9 +99,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  additionalProperties:
-                    $ref: '#/components/schemas/Experience'
+                  $ref: '#/components/schemas/ExperienceList'
   /experience/{id}:
     parameters:
       - name: id
@@ -392,3 +390,7 @@ components:
           $ref: '#/components/schemas/Player'
       required:
         - player
+    ExperienceList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Experience'

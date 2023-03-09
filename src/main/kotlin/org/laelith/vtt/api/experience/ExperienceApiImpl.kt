@@ -1,8 +1,6 @@
 package org.laelith.vtt.api.experience
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import org.hashids.Hashids
 import org.laelith.vtt.api.DiceApiService
 import org.laelith.vtt.api.ExperienceApiService
@@ -29,9 +27,9 @@ class ExperienceApiImpl (
         val experienceFlows = ExperienceFlows(experience)
         this.experienceFlowMap[experience.id] = experienceFlows
 
-        this.experienceMapFlow.update { experienceMap ->
-            experienceMap[experience.id] = experience
-            experienceMap
+        this.experienceMapFlow.value.toMutableMap().also {
+            it[experience.id] = experience
+            this.experienceMapFlow.value = it
         }
 
         return experience
@@ -64,8 +62,9 @@ class ExperienceApiImpl (
         } ?: throw ExperienceNotFoundException("Experience with id $id not found.")
     }
 
-    override fun listExperience(): Flow<MutableMap<String, Experience>> {
-        return this.experienceMapFlow
+    override fun listExperience(): Flow<MutableList<Experience>> {
+        return this.experienceMapFlow.map { experienceMap ->
+            experienceMap.values.toMutableList() }
     }
 
     override suspend fun quitExperience(id: String, experienceInfoIn: ExperienceInfoIn) {
