@@ -21,8 +21,9 @@ class ExperienceApiImpl (
         val experience = Experience(
             id = hashId.encode(System.currentTimeMillis()),
             name = experienceIn.name,
-            users = mutableListOf(),
+            players = mutableListOf(),
             state = Experience.State.created,
+            gm = experienceIn.gm,
         )
 
         val experienceFlows = ExperienceFlows(experience)
@@ -56,10 +57,9 @@ class ExperienceApiImpl (
             ?: throw ExperienceNotFoundException("Experience with id $id not found.")
     }
 
-    override suspend fun joinExperience(id: String) {
-        val currentUserId = ""
+    override suspend fun joinExperience(id: String, experienceInfoIn: ExperienceInfoIn) {
         this.experienceFlowMap[id]?.experienceFlow?.update { experience ->
-            experience.users.add(currentUserId)
+            experience.players.add(experienceInfoIn.player)
             experience
         } ?: throw ExperienceNotFoundException("Experience with id $id not found.")
     }
@@ -68,10 +68,9 @@ class ExperienceApiImpl (
         return this.experienceMapFlow
     }
 
-    override suspend fun quitExperience(id: String) {
-        val currentUserId = ""
+    override suspend fun quitExperience(id: String, experienceInfoIn: ExperienceInfoIn) {
         this.experienceFlowMap[id]?.experienceFlow?.update { experience ->
-            experience.users.remove(currentUserId)
+            experience.players.remove(experienceInfoIn.player)
             experience
         } ?: throw ExperienceNotFoundException("Experience with id $id not found.")
     }
