@@ -80,9 +80,9 @@ class ExperienceApiImpl (
             experience
         } ?: throw ExperienceNotFoundException("Experience with id $id not found.")
 
-        this.experienceMapFlow.update { experienceMap ->
-            experienceMap.remove(id)
-            experienceMap
+        this.experienceMapFlow.value.toMutableMap().also {
+            it.remove(id)
+            this.experienceMapFlow.value = it
         }
 
         this.experienceFlowMap.remove(id)
