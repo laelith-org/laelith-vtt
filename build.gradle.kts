@@ -149,6 +149,7 @@ tasks.withType<org.openapitools.generator.gradle.plugin.tasks.GenerateTask> {
 			"serviceInterface" to true,
 			"useTags" to true,
 			"useSpringBoot3" to true,
+			"modelMutable" to true,
 		)
 	)
 }

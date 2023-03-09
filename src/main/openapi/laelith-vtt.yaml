@@ -99,7 +99,9 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ExperienceList'
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Experience'
   /experience/{id}:
     parameters:
       - name: id
@@ -128,10 +130,6 @@ paths:
       responses:
         200:
           description: Experience removed
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/Experience'
   /experience/{id}/join:
     parameters:
       - name: id
@@ -148,12 +146,6 @@ paths:
       responses:
         200:
           description: VTT experience main stream
-          content:
-            text/event-stream:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ExperienceInfo'
   /experience/{id}/quit:
     parameters:
       - name: id
@@ -215,6 +207,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DiceRollResults'
+  /experience/{id}/events/experience:
+    parameters:
+      - name: id
+        in: path
+        description: Experience id
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Experience events
+      operationId: experienceEvents
+      tags:
+        - experience
+      responses:
+        200:
+          description: Experience event
+          content:
+            text/event-stream:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Experience'
 
 components:
   securitySchemes:
@@ -294,17 +308,19 @@ components:
         name:
           type: string
           description: Experience name
+        state:
+          type: string
+          description: Experience state
+          enum:
+            - created
+            - deleted
+        users:
+          type: array
+          description: Experience users
+          items:
+            type: string
+            description: User id
       required:
         - id
-    ExperienceInfo:
-      type: object
-      description: A VTT experience information
-      properties:
-        message:
-          type: string
-          description: Message of the VTT experience
-    ExperienceList:
-      type: array
-      description: VTT experience list
-      items:
-        $ref: '#/components/schemas/Experience'
+        - users
+        - state

@@ -9,7 +9,7 @@ import dev.diceroll.parser.detailedRoll
 import kotlinx.coroutines.flow.*
 import org.laelith.vtt.domain.DiceRollResult
 
-private fun getFlattenResults(resultTree: ResultTree): List<DiceRollResult> {
+private fun getFlattenResults(resultTree: ResultTree): MutableList<DiceRollResult> {
     val results = mutableListOf<DiceRollResult>()
     resultTree.results.forEach {
         if (it.results.isEmpty()) {
@@ -30,17 +30,16 @@ class DiceApiImpl: DiceApiService {
     private val diceRollFlow = MutableSharedFlow<DiceRollResults>()
     override suspend fun roll(diceRollRequest: DiceRollRequest): DiceRollResults {
         val resultTree = detailedRoll(diceRollRequest.expression)
-        val result = DiceRollResults(
+
+        // this.diceRollFlow.emit(result)
+        return DiceRollResults(
             expression = resultTree.expression.description(),
             result = resultTree.value,
             rolls = getFlattenResults(resultTree)
         )
-
-        // this.diceRollFlow.emit(result)
-        return result;
     }
 
     override fun rolls(): Flow<DiceRollResults> {
-        return this.diceRollFlow;
+        return this.diceRollFlow
     }
 }
