@@ -14,5 +14,6 @@ class LaelithVttConfiguration: WebFluxConfigurer {
         corsRegistry
             .addMapping("/**")
             .allowedOrigins("*")
+            .allowedMethods("GET", "POST","PUT", "DELETE", "OPTIONS");
     }
 }

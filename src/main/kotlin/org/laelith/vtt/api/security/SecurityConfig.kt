@@ -20,7 +20,8 @@ class SecurityConfig(@Value("\${security.jwt.public-key}") val key: String) {
 
     @Bean
     fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
-        http.cors()
+        http.csrf().disable()
+            .cors()
             .and()
             .authorizeExchange { exchange ->
                 exchange.pathMatchers(HttpMethod.OPTIONS).permitAll()
@@ -31,7 +32,6 @@ class SecurityConfig(@Value("\${security.jwt.public-key}") val key: String) {
                 exchange.pathMatchers(HttpMethod.GET, "/info").permitAll()
                 exchange.anyExchange().authenticated()
             }
-            .csrf().disable()
             .oauth2ResourceServer { oauth2 -> oauth2.jwt { jwt -> jwt.jwtDecoder(jwtDecoder())}}
         return http.build()
     }
