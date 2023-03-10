@@ -74,6 +74,7 @@ class ExperienceApiImpl (
 
     override fun listExperience(): Flow<MutableList<Experience>> {
         logger.info("Listing experiences stream.")
+        logger.info("Experience list: ${this.experienceMapFlow.value}")
         return this.experienceMapFlow.map { experienceMap ->
             experienceMap.values.toMutableList() }
     }
