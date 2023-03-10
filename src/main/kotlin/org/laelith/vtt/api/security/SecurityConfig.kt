@@ -30,7 +30,7 @@ class SecurityConfig(@Value("\${security.jwt.public-key}") val key: String) {
                 exchange.pathMatchers(HttpMethod.GET, "/webjars/swagger-ui/**").permitAll()
                 exchange.pathMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
                 exchange.pathMatchers(HttpMethod.GET, "/info").permitAll()
-                exchange.anyExchange().authenticated()
+                exchange.anyExchange().permitAll()
             }
             .oauth2ResourceServer { oauth2 -> oauth2.jwt { jwt -> jwt.jwtDecoder(jwtDecoder())}}
         return http.build()
