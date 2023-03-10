@@ -2,7 +2,7 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security: INFO
 spring:
   application:
     name: Laelith VTT Application
