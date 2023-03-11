@@ -86,6 +86,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Experience'
+  /experience/events:
     get:
       summary: List of VTT experiences stream
       operationId: listExperience
@@ -99,7 +100,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ExperienceList'
+                  $ref: '#/components/schemas/ExperienceInfoList'
   /experience/{id}:
     parameters:
       - name: id
@@ -147,7 +148,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExperienceInfoIn'
+              $ref: '#/components/schemas/Player'
       responses:
         200:
           description: VTT experience main stream
@@ -170,7 +171,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExperienceInfoIn'
+              $ref: '#/components/schemas/Player'
       responses:
         201:
           description: VTT experience quit
@@ -219,7 +220,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DiceRollResults'
-  /experience/{id}/events/experience:
+  /experience/{id}/events:
     parameters:
       - name: id
         in: path
@@ -350,6 +351,22 @@ components:
         - state
         - gm
         - players
+    ExperienceInfo:
+      type: object
+      description: A VTT experience base information
+      properties:
+        id:
+          type: string
+          description: Experience id
+        name:
+          type: string
+          description: Experience name
+        gm:
+          $ref: '#/components/schemas/Player'
+      required:
+        - id
+        - name
+        - gm
     Player:
       type: object
       description: A VTT player with his character
@@ -357,40 +374,13 @@ components:
         id:
           type: string
           description: the user id
-        name:
-          type: string
-          description: the user name
-        character:
-          $ref: '#/components/schemas/PlayerCharacter'
-      required:
-        - id
-        - name
-    PlayerCharacter:
-      type: object
-      description: A VTT player character
-      properties:
-        id:
+        characterId:
           type: string
           description: the character id
-        name:
-          type: string
-          description: the character name
-        avatar:
-          type: string
-          description: the avatar url
       required:
         - id
-        - name
-        - avatar
-    ExperienceInfoIn:
-      type: object
-      description: Information to interact with an experience
-      properties:
-        player:
-          $ref: '#/components/schemas/Player'
-      required:
-        - player
-    ExperienceList:
+        - characterId
+    ExperienceInfoList:
       type: array
       items:
-        $ref: '#/components/schemas/Experience'
+        $ref: '#/components/schemas/ExperienceInfo'

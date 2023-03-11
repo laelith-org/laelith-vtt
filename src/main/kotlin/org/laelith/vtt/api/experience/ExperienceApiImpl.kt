@@ -12,9 +12,10 @@ import org.springframework.stereotype.Controller
 
 @Controller
 class ExperienceApiImpl (
-    private val diceService: DiceApiService
+    private val diceService: DiceApiService,
+    private val experienceMapper: ExperienceMapper,
 ) : ExperienceApiService {
-    private val experienceMapFlow = MutableStateFlow<MutableMap<String, Experience>>(mutableMapOf())
+    private val experienceMapFlow: MutableStateFlow<MutableMap<String, ExperienceInfo>> = MutableStateFlow(mutableMapOf())
     private val experienceFlowMap: MutableMap<String, ExperienceFlows> = mutableMapOf()
     private val logger: Logger = LoggerFactory.getLogger(ExperienceApiImpl::class.java)
     override suspend fun addExperience(experienceIn: ExperienceIn): Experience {
@@ -30,11 +31,9 @@ class ExperienceApiImpl (
 
         val experienceFlows = ExperienceFlows(experience)
         this.experienceFlowMap[experience.id] = experienceFlows
-
-        this.experienceMapFlow.value.toMutableMap().also {
-            it[experience.id] = experience
-            this.experienceMapFlow.value = it
-        }
+        this.experienceMapFlow.emit(this.experienceMapFlow.value.toMutableMap().also {
+            it[experience.id] = experienceMapper.toInfo(experience)
+        });
 
         logger.info("Experience ${experienceIn.name} added.")
         return experience
@@ -60,46 +59,45 @@ class ExperienceApiImpl (
 
     override suspend fun getExperience(id: String): Experience {
         logger.info("Getting experience $id.")
-        return this.experienceMapFlow.value[id]
+        return this.experienceFlowMap[id]?.experienceFlow?.value
             ?: throw ExperienceNotFoundException("Experience with id $id not found.")
     }
 
-    override suspend fun joinExperience(id: String, experienceInfoIn: ExperienceInfoIn) {
+    override suspend fun joinExperience(id: String, player: Player) {
         logger.info("Joining experience $id.")
-        this.experienceFlowMap[id]?.experienceFlow?.update { experience ->
-            experience.players.add(experienceInfoIn.player)
-            experience
-        } ?: throw ExperienceNotFoundException("Experience with id $id not found.")
+        val experience = this.experienceFlowMap[id]?.experienceFlow?.value?.copy()
+            ?: throw ExperienceNotFoundException("Experience with id $id not found.")
+        experience.players = experience.players.toMutableList().also {
+            if (!it.contains(player)) {
+                it.add(player)
+            }
+        }
+        this.experienceFlowMap[id]?.experienceFlow?.emit(experience)
     }
 
-    override fun listExperience(): Flow<MutableList<Experience>> {
+    override fun listExperience(): Flow<MutableList<ExperienceInfo>> {
         logger.info("Listing experiences stream.")
-        logger.info("Experience list: ${this.experienceMapFlow.value}")
-        return this.experienceMapFlow.map { experienceMap ->
-            experienceMap.values.toMutableList() }
+        return this.experienceMapFlow.map { it.values.toMutableList() }
     }
 
-    override suspend fun quitExperience(id: String, experienceInfoIn: ExperienceInfoIn) {
+    override suspend fun quitExperience(id: String, player: Player) {
         logger.info("Quitting experience $id.")
-        this.experienceFlowMap[id]?.experienceFlow?.update { experience ->
-            experience.players.remove(experienceInfoIn.player)
-            experience
-        } ?: throw ExperienceNotFoundException("Experience with id $id not found.")
+        val experience = this.experienceFlowMap[id]?.experienceFlow?.value?.copy()
+            ?: throw ExperienceNotFoundException("Experience with id $id not found.")
+        experience.players = experience.players.toMutableList().also { it.remove(player) }
+        this.experienceFlowMap[id]?.experienceFlow?.emit(experience)
     }
 
     override suspend fun removeExperience(id: String) {
         logger.info("Removing experience $id.")
-        this.experienceFlowMap[id]?.experienceFlow?.update { experience ->
-            experience.state = Experience.State.deleted
-            experience
-        } ?: throw ExperienceNotFoundException("Experience with id $id not found.")
+        this.experienceFlowMap[id]?.experienceFlow?.value = this.experienceFlowMap[id]?.experienceFlow?.value?.copy(state = Experience.State.deleted)
+                ?: throw ExperienceNotFoundException("Experience with id $id not found.")
 
-        this.experienceMapFlow.value.toMutableMap().also {
+        this.experienceMapFlow.emit(this.experienceMapFlow.value.toMutableMap().also {
             it.remove(id)
-            this.experienceMapFlow.value = it
-        }
+        });
 
-        logger.info("Experience $id removed.")
         this.experienceFlowMap.remove(id)
+        logger.info("Experience $id removed.")
     }
 }
