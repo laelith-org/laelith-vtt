@@ -6,7 +6,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.0"
 	kotlin("jvm") version "1.8.10"
 	kotlin("plugin.spring") version "1.8.10"
-	id("pl.allegro.tech.build.axion-release") version "1.14.4"
+	id("pl.allegro.tech.build.axion-release") version "1.15.0"
 	id("org.openapi.generator") version "6.4.0"
 	id("java-library")
 }
