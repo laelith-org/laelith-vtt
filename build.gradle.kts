@@ -48,7 +48,7 @@ dependencies {
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.springframework.security:spring-security-test")
 
-	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.0.2")
+	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
 	implementation("com.google.code.findbugs:jsr305:3.0.2")
