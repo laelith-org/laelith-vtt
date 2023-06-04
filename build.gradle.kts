@@ -87,6 +87,10 @@ tasks.withType<BootBuildImage> {
 				password.set(System.getenv("CR_PASSWORD"))
 			}
 		}
+	} else {
+		val name="laelith-vtt"
+		imageName.set("$name:${project.version}")
+		tags.add("$name:latest")
 	}
 }
 
