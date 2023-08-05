@@ -23,6 +23,7 @@ Run on port 8081
 docker run --rm -p 8080:8080 -it vtt:0.1.0-SNAPSHOT
 ```
 Access it with http://localhost:8080
+client id: vtt.laelith.com
 
 ## Publish a docker image
 Create a new release in https://github.com/vcarluer/laelith-vtt
